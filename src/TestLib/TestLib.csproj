@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    	<Description>Test library</Description>
+		  <IsPackable>true</IsPackable>
+		  <RepositoryType>git</RepositoryType>
+    	<RepositoryUrl>https://github.com/Aqovia/azure-durable-functions-test</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
