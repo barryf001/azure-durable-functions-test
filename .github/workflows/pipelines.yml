@@ -120,8 +120,8 @@ jobs:
           echo $TAG_NAME
           git commit -am "Release commit $NEW_VERSION"
           git tag $TAG_NAME
-          git push
-          git push origin $TAG_NAME
+          git push -f
+          git push -f origin $TAG_NAME
       - name: Create Release NuGet package
         run: |
           source /tmp/build_vars.sh
