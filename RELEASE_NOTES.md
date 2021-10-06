@@ -1,3 +1,4 @@
+## 0.0.7 - pipeline fix (27fb22c) (Barry Fitzgerald)
 ## 0.0.6 - Merge branch 'master' of https://github.com/barryf001/azure-durable-functions-test (d9fec26) (Barry Fitzgerald)
 ## 0.0.5 - Merge branch 'master' of https://github.com/barryf001/azure-durable-functions-test (9b6be60) (Barry Fitzgerald)
 ## 0.0.4 - Merge branch 'master' of https://github.com/barryf001/azure-durable-functions-test (a578a4d) (Barry Fitzgerald)
