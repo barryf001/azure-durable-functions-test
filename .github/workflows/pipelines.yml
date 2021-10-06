@@ -78,24 +78,26 @@ jobs:
       - name: Derive Version
         run: |
           LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'v*' | head -1 | sed -Ee 's/v//g'`
+          echo "LTV=$LAST_TAGGED_VERSION"
           NEW_PATCH_VERSION=`expr $(echo $LAST_TAGGED_VERSION | cut -d '.' -f 3 ) + 1`
+          echo "NPV=$NEW_PATCH_VERSION"
           NEW_VERSION=`echo $LAST_TAGGED_VERSION | sed -Ee "s/[0-9]+$/$NEW_PATCH_VERSION/g"`
+          echo "NV=$NEW_VERSION"
           echo "NEW_VERSION=$NEW_VERSION" >> /tmp/build_vars.sh
-
 
           cat /tmp/build_vars.sh
           
       - name: Prepare Release Note
         run: |
-          source /tmp/build_vars.sh
-          
-          cat /tmp/build_vars.sh
+          source /tmp/build_vars.sh                  
 
           NOTE=`echo -e "## $NEW_VERSION\n- $(git log -n 1 --format="%s (%h) (%an)" | sed -Ee 's/ \(#[0-9+]\)//g')"`
           echo $NOTE >> /tmp/release_note.md
           cat RELEASE_NOTES.md >> /tmp/release_note.md
           mv /tmp/release_note.md RELEASE_NOTES.md
           echo "NOTE=\"$NOTE\"" >> /tmp/build_vars.sh
+
+          cat /tmp/build_vars.sh
       - name: Commit Release
         run: |
           source /tmp/build_vars.sh
