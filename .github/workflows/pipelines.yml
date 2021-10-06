@@ -98,6 +98,7 @@ jobs:
           cat RELEASE_NOTES.md >> /tmp/release_note.md
           mv /tmp/release_note.md RELEASE_NOTES.md
           echo $NOTE >> /tmp/note.md
+          cat /tmp/note.md
       - name: Commit Release
         run: |
           git config --global user.name "aqovia-build"

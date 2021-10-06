@@ -5,7 +5,7 @@
     	<Description>Test library</Description>
 		  <IsPackable>true</IsPackable>
 		  <RepositoryType>git</RepositoryType>
-    	<RepositoryUrl>https://github.com/Aqovia/azure-durable-functions-test</RepositoryUrl>
+    	<RepositoryUrl>https://github.com/barryf001/azure-durable-functions-test</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
