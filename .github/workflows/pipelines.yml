@@ -120,7 +120,7 @@ jobs:
           prerelease: false
       - name: Create Release NuGet package
         run: |
-          dotnet pack -v normal -c Release --include-symbols --include-source -p:PackageVersion=${{ env.NEW_VERSION }} -o nupkg src/$PROJECT_NAME/$PROJECT_NAME.*proj
+          dotnet pack -v normal -c Release -p:Version=${{ env.NEW_VERSION }} -o nupkg src/$PROJECT_NAME/$PROJECT_NAME.csproj
       - name: Push to GitHub Feed
         run: dotnet nuget push ./nupkg/*.nupkg --source https://nuget.pkg.github.com/barryf001/index.json --api-key ${GITHUB_TOKEN}
 
