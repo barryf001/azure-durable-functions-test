@@ -97,18 +97,17 @@ jobs:
           echo $NOTE >> /tmp/release_note.md
           cat RELEASE_NOTES.md >> /tmp/release_note.md
           mv /tmp/release_note.md RELEASE_NOTES.md
-          echo "NOTE=\"$NOTE\"" >> $GITHUB_ENV
+          echo $NOTE >> /tmp/note.md
       - name: Commit Release
-        run: |          
+        run: |
           git config --global user.name "aqovia-build"
           git config --global user.email aqovia-build@github.no-reply.com
-          TAG_NAME=v$NEW_VERSION
+          TAG_NAME=v${{ env.NEW_VERSION }}
           echo $TAG_NAME
-          git commit -am "Release commit $NEW_VERSION"
+          git commit -am "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
           git push -f
           git push -f origin $TAG_NAME
-
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Create a GitHub Release
@@ -117,7 +116,7 @@ jobs:
         with:
           tag_name: ${{ env.TAG_NAME }}
           release_name: Release ${{ env.TAG_NAME }}
-          body_path: ${{ env.NOTE }}
+          body_path: /tmp/note.md
           prerelease: false
       - name: Create Release NuGet package
         run: |
