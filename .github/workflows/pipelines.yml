@@ -31,6 +31,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+        run: |
+          git tag --list
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
