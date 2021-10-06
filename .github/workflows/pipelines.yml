@@ -4,8 +4,6 @@ on:
     #branches:
     #  - '!master'
   pull_request:
-    branches:
-      - master
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
