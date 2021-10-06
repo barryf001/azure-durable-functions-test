@@ -4,6 +4,9 @@ on:
     #branches:
     #  - '!master'
   pull_request:
+
+permissions: write-all
+
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -22,17 +25,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Display variables
-        run: |
-          echo ${{ github.event_name }}
-          echo ${{ github.event_name }}
-          echo ${{ github.ref }}
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - run: |
-          git tag --list
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
