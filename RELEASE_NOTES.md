@@ -1,3 +1,5 @@
+## 2.3.0
+- bump: minor (0011a84) (Barry Fitzgerald)
 ## 2.2.0
 - bump: minor (500e4e7) (Barry Fitzgerald)
 ## 2.1.0
