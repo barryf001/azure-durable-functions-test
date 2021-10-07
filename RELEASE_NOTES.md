@@ -1,3 +1,35 @@
+## 2.8.1
+- New amazing patch 4 (f5d2bdf) (barryf001) 
+Issue on this line Test:Lib.cs: 101
+
+```csharp
+int bad_function(){
+   int x=0;
+  int y=0;
+  int x = x/y;
+}
+```
+
+
+
+
+REALLY LONG NOTE HERE!
+
+
+
+
+JUST KEEPS GOING...
+
+## BIG LIST
+- new work to follow
+- loads of content
+- lorem ipsum dolor set
+- ad graeciam in britannia
+
+
+@barryf001 
+
+💯 🧛 
 ## 2.8.0
 - New amazing feature 3 (69615b1) (barryf001) 
 ```csharp
