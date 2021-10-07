@@ -108,9 +108,9 @@ jobs:
         run: |
           TAG_NAME=v${{ env.NEW_VERSION }}
           echo $TAG_NAME
-          git commit -am "Release commit ${{ env.NEW_VERSION }}"
+          git add RELEASE_NOTES.md
+          git commit -m "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
-          #git push --atomic origin
           git push
           git push -f origin $TAG_NAME
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
