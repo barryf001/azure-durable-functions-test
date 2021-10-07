@@ -43,7 +43,7 @@ jobs:
       #   run: dotnet test -c Release test/${{ env.TEST_PROJECT_NAME }}
       - name: Pack
         run: |
-          LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'p_v*' | head -1 | sed -Ee 's/p_v//g'`
+          LAST_TAGGED_VERSION=`git tag --merged | grep p_v | head -n 1 | sed -Ee 's/p_v//g'`
           [ -z $LAST_TAGGED_VERSION ] && LAST_TAGGED_VERSION=0.0.0
           BRANCH_NAME=${GITHUB_REF##*/}
           dotnet pack -v normal -c Release --no-restore -p:Version=$LAST_TAGGED_VERSION-$BRANCH_NAME-$GITHUB_RUN_ID src/$PROJECT_NAME/$PROJECT_NAME.csproj
