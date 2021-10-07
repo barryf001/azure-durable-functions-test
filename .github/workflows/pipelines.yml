@@ -13,7 +13,7 @@ env:
   # Project name to pack and publish
   PROJECT_NAME: TestLib
   # GitHub Packages Feed settings
-  GITHUB_FEED: https://nuget.pkg.github.com/barryf001/
+  GITHUB_FEED: https://nuget.pkg.github.com/barryf001/index.json
   GITHUB_USER: barryf001
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # Official NuGet Feed settings
@@ -42,27 +42,29 @@ jobs:
       # - name: Test
       #   run: dotnet test -c Release test/${{ env.TEST_PROJECT_NAME }}
       - name: Pack
-        run: dotnet pack -v normal -c Release --no-restore -p:PackageVersion=$GITHUB_RUN_ID src/$PROJECT_NAME/$PROJECT_NAME.csproj
+        run: |
+          LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'p_v*' | head -1 | sed -Ee 's/v//g'`
+          [ -z $LAST_TAGGED_VERSION ] && LAST_TAGGED_VERSION=0.0.0
+          BRANCH_NAME=${GITHUB_REF##*/}
+          dotnet pack -v normal -c Release --no-restore -p:Version=$LAST_TAGGED_VERSION-$BRANCH_NAME-$GITHUB_RUN_ID src/$PROJECT_NAME/$PROJECT_NAME.csproj
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: nupkg
           path: ./src/${{ env.PROJECT_NAME }}/bin/Release/*.nupkg
-  # prerelease:
-  #   needs: build
-  #   if: github.ref == 'refs/heads/develop'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v1
-  #       with:
-  #         name: nupkg
-  #     - name: Push to GitHub Feed
-  #       run: |
-  #         for f in ./nupkg/*.nupkg
-  #         do
-  #           curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
-  #         done
+  branch_preview:
+    needs: build
+    if: github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract branch name
+        run: echo "BRANCH_NAME=${GITHUB_REF##*/}"
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: nupkg
+      - name: Push to GitHub Feed
+        run: dotnet nuget push ./nupkg/*.nupkg --source ${{ env.GITHUB_FEED }} --api-key ${GITHUB_TOKEN}
   deploy:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -87,17 +89,12 @@ jobs:
           dotnet-version: 3.1.301
       - name: Derive Version
         run: |
-          git log -n 5
-          git tag --list --sort=-committerdate 'v*'
-          git log -n 1 --format="%B"
           LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'v*' | head -1 | sed -Ee 's/v//g'`
           BUMP=`echo $(git log --no-merges -n 1 --format="%B") | perl -nE'say/bump:\s*(major$|minor$|patch$)/'`
-          #COMMIT_HASH=`git log --no-merges -n 1 --format="%h"`
           echo $BUMP
           NEW_VERSION=`.github/scripts/semver bump $BUMP $LAST_TAGGED_VERSION`
           echo $NEW_VERSION
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-          #echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
       - name: Prepare Release Note
         run: |          
           echo -e "## $NEW_VERSION\n- $(git log --no-merges -n 1 --format="%s (%h) (%an)" | sed -Ee 's/ \(#[0-9+]\)//g')" >> /tmp/note.md
@@ -107,12 +104,14 @@ jobs:
       - name: Commit Release
         run: |
           TAG_NAME=v${{ env.NEW_VERSION }}
-          echo $TAG_NAME
+          PRE_TAG_NAME=p_$TAG_NAME
+          git tag $PRE_TAG_NAME
           git add RELEASE_NOTES.md
           git commit -m "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
           git push
           git push -f origin $TAG_NAME
+          git push -f origin $PRE_TAG_NAME
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Create a GitHub Release
@@ -127,7 +126,6 @@ jobs:
         run: |
           dotnet pack -v normal -c Release -p:Version=${{ env.NEW_VERSION }} -o nupkg src/$PROJECT_NAME/$PROJECT_NAME.csproj
       - name: Push to GitHub Feed
-        run: dotnet nuget push ./nupkg/*.nupkg --source https://nuget.pkg.github.com/barryf001/index.json --api-key ${GITHUB_TOKEN}
-
+        run: dotnet nuget push ./nupkg/*.nupkg --source ${{ env.GITHUB_FEED }} --api-key ${GITHUB_TOKEN}
       # - name: Push to NuGet Feed
       #   run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
