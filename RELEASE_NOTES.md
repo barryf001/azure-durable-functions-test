@@ -1,3 +1,5 @@
+## 2.6.2
+- bump:patch (95de4c4) (barryf001)
 ## 2.6.1
 - New functionality (c5fe767) (barryf001)
 ## 2.6.0
