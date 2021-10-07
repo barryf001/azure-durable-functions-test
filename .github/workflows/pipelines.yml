@@ -84,6 +84,7 @@ jobs:
           dotnet-version: 3.1.301
       - name: Derive Version
         run: |
+          git tag --list --sort=-committerdate 'v*'
           LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'v*' | head -1 | sed -Ee 's/v//g'`
           BUMP=`echo $(git log -n 1 --format="%B") | perl -nE'say/bump:\s*(major$|minor$|patch$)/'`
           echo $BUMP
