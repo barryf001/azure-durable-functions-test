@@ -1,3 +1,5 @@
+## 2.6.1
+- New functionality (c5fe767) (barryf001)
 ## 2.6.0
 - New functionality (15054f9) (barryf001)
 ## 2.5.1
