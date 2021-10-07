@@ -1,3 +1,5 @@
+## 0.1.0
+- bump: minor (9b3ef3e) (Barry Fitzgerald)
 ## 0.0.12
 - bump: patch (fb45692) (Barry Fitzgerald)
 ## 0.0.9
