@@ -75,6 +75,8 @@ jobs:
           ref: release
       - name: Merge master
         run: |
+          git config --global user.name "aqovia-build"
+          git config --global user.email aqovia-build@github.no-reply.com
           git merge origin/master
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
@@ -96,9 +98,7 @@ jobs:
       - name: Commit Release
         run: |
           TAG_NAME=v${{ env.NEW_VERSION }}
-          echo $TAG_NAME          
-          git config --global user.name "aqovia-build"
-          git config --global user.email aqovia-build@github.no-reply.com
+          echo $TAG_NAME
           git commit -am "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
           git push
