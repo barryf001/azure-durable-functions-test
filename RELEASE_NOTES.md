@@ -1,3 +1,5 @@
+## 2.1.0
+- Improve concurrent logging (65490f0) (barryf001)
 ## 2.0.0
 - bump: major (35aa6c3) (Barry Fitzgerald)
 ## 1.1.1
