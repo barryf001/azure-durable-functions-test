@@ -1,3 +1,5 @@
+## 0.0.10
+- bump: patch (15510b5) (Barry Fitzgerald)
 ## 0.0.9
 - Merge branch 'master' of https://github.com/barryf001/azure-durable-functions-test (ebca88e) (Barry Fitzgerald)
 ## 0.0.8 - pipeline fix (feb6480) (Barry Fitzgerald)
