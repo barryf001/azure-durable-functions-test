@@ -1,3 +1,5 @@
+## 1.0.1
+- bump: patch (2740807) (Barry Fitzgerald)
 ## 1.0.0
 - bump: major (d36a6ac) (Barry Fitzgerald)
 ## 0.1.0
