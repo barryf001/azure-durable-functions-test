@@ -1,3 +1,5 @@
+## 2.5.1
+- bump:patch (7fd9d8d) (Barry Fitzgerald)
 ## 2.5.0
 - bump:minor (c2c6505) (Barry Fitzgerald)
 ## 2.4.0
