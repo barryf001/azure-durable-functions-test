@@ -77,7 +77,9 @@ jobs:
         run: |
           git config --global user.name "aqovia-build"
           git config --global user.email aqovia-build@github.no-reply.com
+          git rev-parse release
           git rebase origin/master
+          git rev-parse release
           git log -n 5
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
