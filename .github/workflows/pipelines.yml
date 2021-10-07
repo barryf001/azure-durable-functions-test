@@ -75,34 +75,42 @@ jobs:
           ref: release
       - name: Merge master
         run: |
+          git config --global user.name "aqovia-build"
+          git config --global user.email aqovia-build@github.no-reply.com
+          git rev-parse release
           git merge origin/master
+          git rev-parse release
+          git log -n 5
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.301
       - name: Derive Version
         run: |
+          git log -n 5
+          git tag --list --sort=-committerdate 'v*'
+          git log -n 1 --format="%B"
           LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'v*' | head -1 | sed -Ee 's/v//g'`
-          BUMP=`echo $(git log -n 1 --format="%B") | perl -nE'say/bump:\s*(major$|minor$|patch$)/'`
+          BUMP=`echo $(git log --no-merges -n 1 --format="%B") | perl -nE'say/bump:\s*(major$|minor$|patch$)/'`
+          #COMMIT_HASH=`git log --no-merges -n 1 --format="%h"`
           echo $BUMP
           NEW_VERSION=`.github/scripts/semver bump $BUMP $LAST_TAGGED_VERSION`
           echo $NEW_VERSION
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          #echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
       - name: Prepare Release Note
         run: |          
-          echo -e "## $NEW_VERSION\n- $(git log -n 1 --format="%s (%h) (%an)" | sed -Ee 's/ \(#[0-9+]\)//g')" >> /tmp/note.md
+          echo -e "## $NEW_VERSION\n- $(git log --no-merges -n 1 --format="%s (%h) (%an)" | sed -Ee 's/ \(#[0-9+]\)//g')" >> /tmp/note.md
           cat /tmp/note.md RELEASE_NOTES.md >> /tmp/release_note.md
           mv /tmp/release_note.md RELEASE_NOTES.md
       - name: Commit Release
         run: |
           TAG_NAME=v${{ env.NEW_VERSION }}
-          echo $TAG_NAME          
-          git config --global user.name "aqovia-build"
-          git config --global user.email aqovia-build@github.no-reply.com          
+          echo $TAG_NAME
           git commit -am "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
-          git push --atomic origin
-          #git push -f origin $TAG_NAME
+          #git push --atomic origin
+          git push -f origin $TAG_NAME
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Create a GitHub Release
