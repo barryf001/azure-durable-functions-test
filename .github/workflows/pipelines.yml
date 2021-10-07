@@ -73,11 +73,11 @@ jobs:
         with:
           fetch-depth: 0
           ref: release
-      - name: Merge master
+      - name: Rebase Release branch
         run: |
           git config --global user.name "aqovia-build"
           git config --global user.email aqovia-build@github.no-reply.com
-          git merge origin/master
+          git rebase origin/master
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
