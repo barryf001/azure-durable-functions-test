@@ -1,3 +1,14 @@
+## 2.8.0
+- New amazing feature 3 (69615b1) (barryf001) 
+```csharp
+using System.Collections.Generic;
+
+int main(){
+  return -1;
+}
+```
+
+use this all the time - it's well cool! :) 👍 
 ## 2.7.0
 - Release not updates (541ed31) (Barry Fitzgerald) 
 ```Some nice code snippet```$'\n'
