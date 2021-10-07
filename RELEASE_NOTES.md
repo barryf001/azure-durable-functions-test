@@ -1,3 +1,6 @@
+## 2.7.0
+- Release not updates (541ed31) (Barry Fitzgerald) 
+```Some nice code snippet```$'\n'
 ## 2.6.2
 - bump:patch (95de4c4) (barryf001)
 ## 2.6.1
