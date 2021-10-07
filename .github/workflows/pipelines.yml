@@ -101,6 +101,7 @@ jobs:
       - name: Prepare Release Note
         run: |          
           echo -e "## $NEW_VERSION\n- $(git log --no-merges -n 1 --format="%s (%h) (%an)" | sed -Ee 's/ \(#[0-9+]\)//g')" >> /tmp/note.md
+          [ -e RELEASE_NOTES.md ] || touch RELEASE_NOTES.md
           cat /tmp/note.md RELEASE_NOTES.md >> /tmp/release_note.md
           mv /tmp/release_note.md RELEASE_NOTES.md
       - name: Commit Release
