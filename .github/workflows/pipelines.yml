@@ -73,8 +73,9 @@ jobs:
         with:
           fetch-depth: 0
           ref: release
-      - run: |
-          git merge master
+      - name: Merge master
+        run: |
+          git fetch --all && git pull --all && git merge master                  
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
