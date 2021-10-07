@@ -72,8 +72,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: ${{ secrets.PUSH_TOKEN }}
-          persist-credentials: false
+          ref: release
+      - run: |
+          git rebase master
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -93,14 +94,14 @@ jobs:
           mv /tmp/release_note.md RELEASE_NOTES.md
       - name: Commit Release
         run: |
-          git config --global user.name "aqovia-build"
-          git config --global user.email aqovia-build@github.no-reply.com
           TAG_NAME=v${{ env.NEW_VERSION }}
-          echo $TAG_NAME
+          echo $TAG_NAME          
+          git config --global user.name "aqovia-build"
+          git config --global user.email aqovia-build@github.no-reply.com          
           git commit -am "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
-          git push -f
-          git push -f origin $TAG_NAME
+          git push --atomic origin
+          #git push -f origin $TAG_NAME
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Create a GitHub Release
