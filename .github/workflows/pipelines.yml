@@ -98,11 +98,11 @@ jobs:
           TAG_NAME=v${{ env.NEW_VERSION }}
           echo $TAG_NAME          
           git config --global user.name "aqovia-build"
-          git config --global user.email aqovia-build@github.no-reply.com          
+          git config --global user.email aqovia-build@github.no-reply.com
           git commit -am "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
-          git push --atomic origin
-          #git push -f origin $TAG_NAME
+          git push
+          git push -f origin $TAG_NAME
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Create a GitHub Release
