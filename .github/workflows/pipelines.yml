@@ -5,8 +5,6 @@ on:
     #  - '!master'
   pull_request:
 
-permissions: write-all
-
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -75,7 +73,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.PUSH_TOKEN }}
-          persist-credentials: false          
+          persist-credentials: false
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -83,10 +81,11 @@ jobs:
       - name: Derive Version
         run: |
           LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'v*' | head -1 | sed -Ee 's/v//g'`
-          NEW_PATCH_VERSION=`expr $(echo $LAST_TAGGED_VERSION | cut -d '.' -f 3 ) + 1`
-          NEW_VERSION=`echo $LAST_TAGGED_VERSION | sed -Ee "s/[0-9]+$/$NEW_PATCH_VERSION/g"`
+          BUMP=`echo $(git log -n 1 --format="%B") | perl -nE'say/bump:\s*(major$|minor$|patch$)/'`
+          echo $BUMP
+          NEW_VERSION=`.github/scripts/semver bump $BUMP $LAST_TAGGED_VERSION`
+          echo $NEW_VERSION
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-
       - name: Prepare Release Note
         run: |          
           echo -e "## $NEW_VERSION\n- $(git log -n 1 --format="%s (%h) (%an)" | sed -Ee 's/ \(#[0-9+]\)//g')" >> /tmp/note.md
