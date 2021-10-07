@@ -1,3 +1,5 @@
+## 2.6.0
+- New functionality (15054f9) (barryf001)
 ## 2.5.1
 - bump:patch (7fd9d8d) (Barry Fitzgerald)
 ## 2.5.0
