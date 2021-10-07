@@ -45,7 +45,7 @@ jobs:
         run: |
           LAST_TAGGED_VERSION=`git tag --sort=-committerdate 'p_v*' --merged | head -n 1 | sed -Ee 's/p_v//g'`
           [ -z $LAST_TAGGED_VERSION ] && LAST_TAGGED_VERSION=0.0.0
-          BRANCH_NAME=${GITHUB_REF##*/}
+          BRANCH_NAME=`echo ${GITHUB_REF##*/} | sed -Ee 's/[_ ]/-/g'
           dotnet pack -v normal -c Release --no-restore -p:Version=$LAST_TAGGED_VERSION-$BRANCH_NAME-$GITHUB_RUN_ID src/$PROJECT_NAME/$PROJECT_NAME.csproj
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
