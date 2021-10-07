@@ -9,6 +9,5 @@ namespace TestLib
         const string NEW_FUNCTIONALITY_2="NEW_FUNCTIONALITY_2";
         const string NEW_FUNCTIONALITY_3="NEW_FUNCTIONALITY_3";
         const string NEW_FUNCTIONALITY_4="NEW_FUNCTIONALITY_4";
-
     }
 }
