@@ -1,3 +1,5 @@
+## 2.2.0
+- bump: minor (500e4e7) (Barry Fitzgerald)
 ## 2.1.0
 - Improve concurrent logging (65490f0) (barryf001)
 ## 2.0.0
