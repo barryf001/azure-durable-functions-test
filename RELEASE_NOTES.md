@@ -1,3 +1,5 @@
+## 2.3.1
+- bump: patch (767fd05) (Barry Fitzgerald)
 ## 2.3.0
 - bump: minor (0011a84) (Barry Fitzgerald)
 ## 2.2.0
