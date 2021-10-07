@@ -1,3 +1,5 @@
+## 1.0.0
+- bump: major (d36a6ac) (Barry Fitzgerald)
 ## 0.1.0
 - bump: minor (9b3ef3e) (Barry Fitzgerald)
 ## 0.0.12
