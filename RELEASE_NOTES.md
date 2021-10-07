@@ -1,3 +1,5 @@
+## 0.0.11
+- bump: patch (6af7674) (Barry Fitzgerald)
 ## 0.0.10
 - bump: patch (15510b5) (Barry Fitzgerald)
 ## 0.0.9
