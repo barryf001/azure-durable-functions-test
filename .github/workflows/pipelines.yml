@@ -74,6 +74,8 @@ jobs:
           fetch-depth: 0
           ref: release
       - run: |
+          git fetch --all
+          git pull --all
           git rebase master
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
