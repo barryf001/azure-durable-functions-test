@@ -1,3 +1,5 @@
+## 2.3.3
+- bump: patch (c99ca6a) (Barry Fitzgerald)
 ## 2.3.2
 - bump: patch (91521d7) (Barry Fitzgerald)
 ## 2.3.1
