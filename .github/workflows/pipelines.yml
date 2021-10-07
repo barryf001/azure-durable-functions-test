@@ -110,6 +110,7 @@ jobs:
           git commit -am "Release commit ${{ env.NEW_VERSION }}"
           git tag $TAG_NAME
           #git push --atomic origin
+          git push
           git push -f origin $TAG_NAME
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
