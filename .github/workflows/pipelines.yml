@@ -83,8 +83,10 @@ jobs:
           #check to see if the release branch is already created if not create and push it - else move onto it and merge latest master
           if [ -z $(git branch --list release) ]
           then
+            echo "Release does not exist"
             git checkout -b release && git push -u origin release
           else
+            echo "Release exists"
             git checkout release && git pull && git merge master
           fi
       - name: Setup .NET Core
