@@ -80,14 +80,13 @@ jobs:
           fetch-depth: 0
       - name: Prepare release branch
         run: |
-          #check to see if the release branch is already created if not create and push it - else move onto it and merge latest master
-          if [ -z $(git branch --list release) ]
-          then
-            echo "Release does not exist"
-            git checkout -b release && git push -u origin release
-          else
+          #check to see if the release branch is already created if not create and push it - else move onto it and merge latest master          
+          if git fetch origin release; then
             echo "Release exists"
             git checkout release && git pull && git merge master
+          else
+            echo "Release does not exist"
+            git checkout -b release && git push -u origin release
           fi
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
@@ -101,7 +100,7 @@ jobs:
           NEW_VERSION=`.github/scripts/semver bump $BUMP $LAST_TAGGED_VERSION` && echo $NEW_VERSION && echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV                    
       - name: Prepare Release Note
         run: |
-          echo "## $NEW_VERSION" >> /tmp/note.md          
+          echo "## $NEW_VERSION" >> /tmp/note.md
           echo "$(git log --no-merges -n 1 --format="- %s (%h) (%an) %n%b" | sed -Ee 's/bump:\s*(major|minor|patch)//g' | sed -Ee 's/ \(#[0-9+]\)//g' | sed -Ee 's/Co-authored-by.*$//g')" >> /tmp/note.md
           [ -e RELEASE_NOTES.md ] || touch RELEASE_NOTES.md
           cat /tmp/note.md RELEASE_NOTES.md >> /tmp/release_note.md
