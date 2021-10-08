@@ -33,8 +33,13 @@ jobs:
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
-        if: ${{ [ ! -z $(ls test) ] }}
-        run: dotnet test -c Release --no-restore
+        run: |
+          if [[ ! -z $(ls test) ]]
+          then
+            dotnet test -c Release --no-restore
+          else
+            echo "No tests found"
+          fi        
       - name: Pack
         run: |
           LAST_TAGGED_VERSION=`git tag --sort=-committerdate 'p_v*' --merged | head -n 1 | sed -Ee 's/p_v//g'`
