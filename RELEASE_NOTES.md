@@ -1,3 +1,5 @@
+## 2.9.0
+- More updates to pipeline (190143d) (Barry Fitzgerald) 
 ## 2.8.1
 - New amazing patch 4 (f5d2bdf) (barryf001) 
 Issue on this line Test:Lib.cs: 101
