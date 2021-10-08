@@ -16,7 +16,6 @@ env:
   PROJECT_NAME: TestLib
   # GitHub Packages Feed settings
   GITHUB_FEED: https://nuget.pkg.github.com/barryf001/index.json
-  GITHUB_USER: barryf001
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # Official NuGet Feed settings
   # NUGET_FEED: https://api.nuget.org/v3/index.json
@@ -29,20 +28,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.301
-      - name: Install NPM
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12'
       - name: Restore
         run: dotnet restore
       - name: Build
         run: dotnet build -c Release --no-restore
-      # - name: Test
-      #   run: dotnet test -c Release test/${{ env.TEST_PROJECT_NAME }}
+      - name: Test
+        if: ${{ [ ! -z $(ls test) ] }}
+        run: dotnet test -c Release --no-restore
       - name: Pack
         run: |
           LAST_TAGGED_VERSION=`git tag --sort=-committerdate 'p_v*' --merged | head -n 1 | sed -Ee 's/p_v//g'`
@@ -82,16 +74,10 @@ jobs:
         run: |
           #check to see if the release branch is already created if not create and push it - else move onto it and merge latest master          
           if git fetch origin release; then
-            echo "Release exists"
-            git checkout release && git pull && git merge master
+            git checkout release && git merge master
           else
-            echo "Release does not exist"
             git checkout -b release && git push -u origin release
           fi
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.301
       - name: Derive Version
         run: |
           LAST_TAGGED_VERSION=`git tag --list --sort=-committerdate 'v*' | head -1 | sed -Ee 's/v//g'`
