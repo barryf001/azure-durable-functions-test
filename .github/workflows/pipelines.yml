@@ -85,7 +85,7 @@ jobs:
           then
             git checkout -b release && git push -u origin release
           else
-            git checkout release && git merge master
+            git checkout release && git pull && git merge master
           fi
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
